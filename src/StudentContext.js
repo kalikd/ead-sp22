@@ -2,7 +2,8 @@ import {createContext} from 'react'
 
 const StudentContext = createContext()
 
-StudentProvider = StudentContext.Provider;
-StudentConsumer = StudentContext.Consumer;
+const StudentProvider = StudentContext.Provider;
+const StudentConsumer = StudentContext.Consumer;
 
-export {StudentConsumer, StudentProvider}
+
+export {StudentProvider, StudentConsumer, StudentContext};
