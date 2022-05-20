@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/main.css"> 
+    <title>Products</title>
+</head>
+<body>
+    <%- include('layout/navbar')%>
+    <h1>Product List</h1>
+    <ul>
+        <% for(var i=0; i<products.length; i++){ %>
+                <li><a href=<%='product/getProduct/'+products[i]._id %>> <%=products[i].title%> </a> - <%=products[i].price%> </li>
+            <% } %>
+    </ul>
+</body>
+</html>
