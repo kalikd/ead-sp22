@@ -17,6 +17,7 @@ const productDetail = async (req, res) => {
 };
 
 const createProduct = (req, res) => {
+  console.log("create");
   console.log(req.body);
   const img = req.files.pic;
   img.mv(path.resolve(__dirname, "public/img", img.name), (err) => {

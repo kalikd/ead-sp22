@@ -30,7 +30,11 @@ const mongoose = require("mongoose");
 
 const path = require("path");
 
+const middleware = require("./middlewares/");
+
 const productController = require("./controllers/productController");
+
+const userController = require("./controllers/userController");
 
 const { render, compileFile } = require("pug");
 
@@ -48,15 +52,7 @@ app.set("view engine", "ejs");
 
 mongoose.connect("mongodb://127.0.0.1:27017/ead2");
 
-const validateMiddleware = (req, res, next) => {
-  const { title, price } = req.body;
-  if (!title || !price || !req.files) {
-    return res.redirect("/create");
-  }
-  next();
-};
-
-app.use("/product/create", validateMiddleware);
+//app.use("/product/create", validateMiddleware);
 
 app.get("/", function (req, res) {
   //const homePage = path.resolve(__dirname, 'index.html')
@@ -67,7 +63,26 @@ app.get("/", function (req, res) {
   res.render("index", { name: "Kamal", products });
 });
 
-app.post("/product/create", productController.createProduct);
+app.get("/product/create/name", (req, res) => {
+  console.log("name");
+  res.send({ msg: "Wow" });
+});
+
+app.post(
+  "/product/create",
+  middleware.myMiddleware,
+  middleware.validateMiddleware,
+
+  productController.createProduct
+);
+
+app.get("/signup", userController.create);
+
+//app.get("/login", userController.login);
+
+//app.post("/validate", userController.validate);
+
+app.post("/user/create", userController.signup);
 
 app.get("/product/getProduct/:pid", productController.productDetail);
 
