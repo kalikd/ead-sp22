@@ -1,6 +1,7 @@
 const Product = require("../models/Product");
 
 const getProducts = async (req, res) => {
+  console.log(req.session.uid);
   const products = await Product.find();
   res.render("products", { products });
 };

@@ -12,12 +12,19 @@
     <h1>Signup</h1>
     <form action="/user/create" method="post" enctype="multipart/form-data">
         <label>Username:</label>
-        <input type="text" name="username" />
+        <input type="text" name="username" value="<%=username%>" />
         <br>
         <label>Password:</label>
         <input type="password" name="password" />
 
         <br>
+
+        <ul style="color:red">
+            <% if(errors){
+                for(let i = 0; i < errors.length; i++){ %>
+            <li><%= errors[i] %></li>
+            <% } } %>
+        </ul>
 
         <input type="submit" value="Register"/>
     </form>

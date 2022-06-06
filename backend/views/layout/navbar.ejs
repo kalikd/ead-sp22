@@ -3,6 +3,11 @@
     <li><a href="/about">Aboutus</a></li>
     <li><a href="/create">Create</a></li>
     <li><a href="/products">Products</a></li>
+    <% if(!isLoggedIn){ %>
     <li><a href="/login">Login</a></li>
     <li><a href="/signup">Signup</a></li>
+    <% } else { %>
+        <li><a href="/logout">Logout</a></li> 
+        <% } %> 
+    
 </ul>

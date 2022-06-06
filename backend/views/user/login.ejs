@@ -10,13 +10,12 @@
 <body>
     <%- include('../layout/navbar')%>
     <h1>Login</h1>
-    <form action="/user/validate" method="post" enctype="multipart/form-data">
+    <form action="user/validate" method="post" enctype="multipart/form-data">
         <label>Username:</label>
         <input type="text" name="username" />
         <br>
         <label>Password:</label>
         <input type="password" name="password" />
-
         <br>
 
         <input type="submit" value="Login"/>

@@ -24,11 +24,15 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 
+const expressSession = require("express-session");
+
 const fileUpload = require("express-fileupload");
 
 const mongoose = require("mongoose");
 
 const path = require("path");
+
+const flash = require("connect-flash");
 
 const middleware = require("./middlewares/");
 
@@ -42,6 +46,10 @@ const app = express();
 
 app.use(fileUpload());
 
+app.use(flash());
+
+app.use(expressSession({ secret: "MYSECRETKEY" }));
+
 app.use("/style", express.static("public/css"));
 app.use("/images", express.static("public/img"));
 
@@ -53,6 +61,10 @@ app.set("view engine", "ejs");
 mongoose.connect("mongodb://127.0.0.1:27017/ead2");
 
 //app.use("/product/create", validateMiddleware);
+
+global.isLoggedIn = null;
+
+app.use("*", middleware.setLoggedInUser);
 
 app.get("/", function (req, res) {
   //const homePage = path.resolve(__dirname, 'index.html')
@@ -76,19 +88,25 @@ app.post(
   productController.createProduct
 );
 
-app.get("/signup", userController.create);
+app.get("/logout", userController.logout);
 
-//app.get("/login", userController.login);
+app.get("/signup", middleware.isLoggedIn, userController.create);
 
-//app.post("/validate", userController.validate);
+app.get("/login", middleware.isLoggedIn, userController.login);
+
+app.post("/user/validate", userController.authenticate);
 
 app.post("/user/create", userController.signup);
 
-app.get("/product/getProduct/:pid", productController.productDetail);
+app.get(
+  "/product/getProduct/:pid",
+  middleware.isAuthenticated,
+  productController.productDetail
+);
 
-app.get("/create", productController.create);
+app.get("/create", middleware.isAuthenticated, productController.create);
 
-app.get("/products", productController.getProducts);
+app.get("/products", middleware.isAuthenticated, productController.getProducts);
 
 app.all("/about", function (req, res) {
   // const aboutPage = path.resolve(__dirname, 'about.html')
