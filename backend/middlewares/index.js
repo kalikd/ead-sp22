@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const jwt = require('jsonwebtoken');
 const validateMiddleware = (req, res, next) => {
   const { title, price } = req.body;
   if (!title || !price || !req.files) {
@@ -12,6 +13,15 @@ const myMiddleware = (req, res, next) => {
 
   next();
 };
+
+// const verifyToken = (req, res, next) => {
+//   const headerToken = req.headers.authorization.split(" ")[1];
+//   const res = jwt.verify(headerToken,process.env.SECRET_KEY)
+//   if(!res) {
+//     return res.status(403).json({msg:'Error'})
+//   }
+//   next()
+// }
 
 const setLoggedInUser = (req, res, next) => {
   global.isLoggedIn = req.session.uid;
@@ -42,4 +52,5 @@ module.exports = {
   isAuthenticated,
   isLoggedIn,
   setLoggedInUser,
+  //verifyToken
 };

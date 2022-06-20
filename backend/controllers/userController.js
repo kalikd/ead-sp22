@@ -1,5 +1,9 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const SECRET = 'MYSECRETKEY'
+
 
 const login = (req, res) => {
   res.render("user/login");
@@ -10,6 +14,26 @@ const logout = (req, res) => {
   res.redirect("/login");
 };
 
+const jwtLogin = (req, res) => {
+  const { username, password } = req.body;
+  User.findOne({ username }, (err, user) => {
+    console.log(user);
+    if (user) {
+      bcrypt.compare(password, user.password, (err, validated) => {
+        console.log(validated);
+        if (validated) {
+          const token = jwt.sign({username:user.username},process.env.SECRET_KEY,{expiresIn:60*30})
+          res.status(200).json({token})
+        } else {
+          res.status(401).send({msg:'Error'})
+        }
+      });
+    } else {
+      res.status(401).send({msg:'Error'})
+    }
+  });
+};
+
 const authenticate = (req, res) => {
   const { username, password } = req.body;
   User.findOne({ username }, (err, user) => {
@@ -18,6 +42,7 @@ const authenticate = (req, res) => {
       bcrypt.compare(password, user.password, (err, validated) => {
         console.log(validated);
         if (validated) {
+          const token = jwt.sign({username:user.username},SECRET,{expiresIn:60*30})
           req.session.uid = user._id;
           isLoggedIn = true;
           res.redirect("/");
@@ -62,7 +87,7 @@ const signup = (req, res) => {
     res.redirect("/");
   });
 };
-module.exports = { create, signup, login, authenticate, logout };
+module.exports = { create, signup, login, authenticate, logout,jwtLogin };
 
 // err = {errors:{
 //   username:{msg:'ss'},

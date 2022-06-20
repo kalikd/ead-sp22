@@ -38,6 +38,7 @@ const dotenv = require("dotenv");
 
 const EventEmitter = require("events");
 
+
 const event = new EventEmitter();
 
 event.on("bark", function (name, age) {
@@ -104,6 +105,8 @@ app.post(
   productController.createProduct
 );
 
+app.post('/jwtLogin', userController.jwtLogin)
+
 app.get("/logout", userController.logout);
 
 app.get("/signup", middleware.isLoggedIn, userController.create);
@@ -149,7 +152,6 @@ app.all("/blog", function (req, res) {
 app.use("*", function (req, res) {
   res.status(404).json({ msg: "Not Found" });
 });
-
 
 
 module.exports = app;
