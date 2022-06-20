@@ -12,8 +12,8 @@
     <h1>Product List</h1>
     <ul>
         <% for(var i=0; i<products.length; i++){ %>
-                <li><a href=<%='product/getProduct/'+products[i]._id %>> <%=products[i].title%> </a> - <%=products[i].price%> </li>
-            <% } %>
+                <li><a href=<%='product/getProduct/'+products[i]._id %>> <%=products[i].title%> </a> - <%=products[i].price%>  --- <%=products[i].userid ? products[i].userid.username : ''%></li>
+        <% } %>
     </ul>
 </body>
 </html>

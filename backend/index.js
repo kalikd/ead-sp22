@@ -34,6 +34,22 @@ const path = require("path");
 
 const flash = require("connect-flash");
 
+const dotenv = require("dotenv");
+
+const EventEmitter = require("events");
+
+const event = new EventEmitter();
+
+event.on("bark", function (name, age) {
+  console.log(name + " is barking! He is" + age + "old. bow bow bow");
+});
+
+event.emit("bark", "Sheroo", 21);
+event.emit("bark", "Tommy", 12);
+event.emit("bark", "Wadera", 5);
+
+dotenv.config();
+
 const middleware = require("./middlewares/");
 
 const productController = require("./controllers/productController");
@@ -98,6 +114,7 @@ app.post("/user/validate", userController.authenticate);
 
 app.post("/user/create", userController.signup);
 
+
 app.get(
   "/product/getProduct/:pid",
   middleware.isAuthenticated,
@@ -107,6 +124,8 @@ app.get(
 app.get("/create", middleware.isAuthenticated, productController.create);
 
 app.get("/products", middleware.isAuthenticated, productController.getProducts);
+
+app.get("/getProducts", productController.getAllProducts);
 
 app.all("/about", function (req, res) {
   // const aboutPage = path.resolve(__dirname, 'about.html')
@@ -125,13 +144,12 @@ app.all("/blog", function (req, res) {
 });
 
 // app.use('/about', function(req, res) {
-
 // })
 
 app.use("*", function (req, res) {
   res.status(404).json({ msg: "Not Found" });
 });
 
-app.listen(3000, function () {
-  console.log("listening at port 3000");
-});
+
+
+module.exports = app;

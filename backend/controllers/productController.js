@@ -1,10 +1,19 @@
 const Product = require("../models/Product");
+const path = require("path");
 
 const getProducts = async (req, res) => {
   console.log(req.session.uid);
-  const products = await Product.find();
+  const products = await Product.find().populate("userid");
   res.render("products", { products });
 };
+
+
+
+const getAllProducts = async (req, res) => {
+  const products = await Product.find()
+  res.json(products)
+};
+
 
 const create = (req, res) => {
   res.render("create");
@@ -22,11 +31,14 @@ const createProduct = (req, res) => {
   console.log(req.body);
   const img = req.files.pic;
   img.mv(path.resolve(__dirname, "public/img", img.name), (err) => {
-    Product.create({ ...req.body, image: img.name }, (err, product) => {
-      console.log(product);
-      res.redirect("/products");
-    });
+    Product.create(
+      { ...req.body, image: img.name, userid: req.session.uid },
+      (err, product) => {
+        console.log(product);
+        res.redirect("/products");
+      }
+    );
   });
 };
 
-module.exports = { getProducts, create, productDetail, createProduct };
+module.exports = { getProducts, create, productDetail, createProduct, getAllProducts };

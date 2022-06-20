@@ -33,6 +33,7 @@ const authenticate = (req, res) => {
 
 const create = (req, res) => {
   const data = req.flash("data")[0];
+  console.log("KDD=>", data);
   let username = "";
 
   if (data) {
@@ -50,6 +51,7 @@ const signup = (req, res) => {
   User.create(req.body, (err, user) => {
     if (err) {
       req.flash("data", req.body);
+      console.log("XError=>", err);
       const errors = Object.keys(err.errors).map(
         (itm) => err.errors[itm].message
       );

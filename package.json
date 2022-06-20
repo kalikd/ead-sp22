@@ -36,5 +36,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:kalikd/ead-sp22.git",
+  "author": "Khalid Hussain <asadkhalidhussain@gmail.com>",
+  "license": "MIT"
 }
