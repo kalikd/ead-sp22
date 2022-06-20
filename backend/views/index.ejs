@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/main.css"> 
+    <title>Homepage</title>
+</head>
+<body>
+   <%- include('layout/navbar')%>
+    <h1>Homepage</h1>
+    <h2>Hello <%=name %></h2>
+    <% 
+    let lis = ''
+    for(let i=0;i<products.length;i++){
+        
+       lis += `<li> ${products[i]}</li>`
+        
+    } %>
+    <ul>
+
+        <%- lis %>
+    </ul>
+    
+</body>
+</html>

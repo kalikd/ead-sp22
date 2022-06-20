@@ -6,9 +6,12 @@
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
+    "npkill": "^0.8.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.8",
     "react-scripts": "5.0.0",
+    "redux": "^4.1.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -34,5 +37,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:kalikd/ead-sp22.git",
+  "author": "Khalid Hussain <asadkhalidhussain@gmail.com>",
+  "license": "MIT"
 }
