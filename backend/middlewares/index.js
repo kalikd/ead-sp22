@@ -37,6 +37,22 @@ const isAuthenticated = (req, res, next) => {
   });
 };
 
+const hasToken = (req, res, next) => {
+  try {
+    const headerValue = req.headers.authorization.split(' ')[1]
+    console.log('Token:', headerValue);
+    const result = jwt.verify(headerValue, process.env.SECRET_KEY)
+    if(result) {
+      next()
+    }
+    else
+    return res.status(401).send({msg:'Unauthorized'})
+  }
+  catch (err) {
+    return res.status(401).send({msg:err})
+  }
+}
+
 const isLoggedIn = (req, res, next) => {
   User.findById(req.session.uid, (err, user) => {
     if (user) {
@@ -52,5 +68,6 @@ module.exports = {
   isAuthenticated,
   isLoggedIn,
   setLoggedInUser,
+  hasToken
   //verifyToken
 };

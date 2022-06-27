@@ -53,6 +53,10 @@ dotenv.config();
 
 const middleware = require("./middlewares/");
 
+const Validator = require('jsonschema').Validator
+
+const validator = new Validator();
+
 const productController = require("./controllers/productController");
 
 const userController = require("./controllers/userController");
@@ -124,11 +128,68 @@ app.get(
   productController.productDetail
 );
 
+app.post('/createVehicle', (req, res) => {
+  try {
+
+    console.log('YES')
+    const vehicleSchema = {
+      "$schema": "https://json-schema.org/draft/2019-09/schema",
+      "$id": "http://example.com/example.json",
+      "type": "object",
+      "default": {},
+      "title": "Root Schema",
+      "required": [
+          "title",
+          "model",
+          "year"
+      ],
+      "properties": {
+          "title": {
+              "type": "string",
+              "default": "",
+              "title": "The title Schema",
+              "examples": [
+                  "Mehran"
+              ]
+          },
+          "model": {
+              "type": "string",
+              "default": "",
+              "title": "The model Schema",
+              "examples": [
+                  "abc"
+              ]
+          },
+          "year": {
+              "type": "string",
+              "default": "",
+              "title": "The year Schema",
+              "examples": [
+                  "2005"
+              ]
+          }
+      },
+      "examples": [{
+          "title": "Mehran",
+          "model": "abc",
+          "year": "2005"
+      }]
+  }
+    const result = validator.validate(req.body, vehicleSchema, {throwError:true})
+
+    res.send({msg:'Success'})
+  }
+  catch (err) {
+    res.send(err)
+  }
+  
+})
+
 app.get("/create", middleware.isAuthenticated, productController.create);
 
 app.get("/products", middleware.isAuthenticated, productController.getProducts);
 
-app.get("/getProducts", productController.getAllProducts);
+app.get("/getProducts", middleware.hasToken, productController.getAllProducts);
 
 app.all("/about", function (req, res) {
   // const aboutPage = path.resolve(__dirname, 'about.html')

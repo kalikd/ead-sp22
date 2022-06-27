@@ -2,7 +2,6 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const SECRET = 'MYSECRETKEY'
 
 
 const login = (req, res) => {
@@ -15,14 +14,15 @@ const logout = (req, res) => {
 };
 
 const jwtLogin = (req, res) => {
+  
   const { username, password } = req.body;
   User.findOne({ username }, (err, user) => {
-    console.log(user);
+    console.log('YEEES',user);
     if (user) {
       bcrypt.compare(password, user.password, (err, validated) => {
         console.log(validated);
         if (validated) {
-          const token = jwt.sign({username:user.username},process.env.SECRET_KEY,{expiresIn:60*30})
+          const token = jwt.sign({username:user.username},process.env.SECRET_KEY,{expiresIn:30*60})
           res.status(200).json({token})
         } else {
           res.status(401).send({msg:'Error'})
@@ -42,7 +42,6 @@ const authenticate = (req, res) => {
       bcrypt.compare(password, user.password, (err, validated) => {
         console.log(validated);
         if (validated) {
-          const token = jwt.sign({username:user.username},SECRET,{expiresIn:60*30})
           req.session.uid = user._id;
           isLoggedIn = true;
           res.redirect("/");
